@@ -10,11 +10,19 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 app.get('/', function(req, res) {
-    res.send({ ip: req.ip });
+	var ip = req.headers['x-forwarded-for'] || 
+     req.connection.remoteAddress || 
+     req.socket.remoteAddress ||
+     req.connection.socket.remoteAddress;
+    res.send({ ip: ip });
 });
 
 app.get('/plain', function(req, res) {
-    res.send(req.ip);
+	var ip = req.headers['x-forwarded-for'] || 
+     req.connection.remoteAddress || 
+     req.socket.remoteAddress ||
+     req.connection.socket.remoteAddress;
+    res.send(ip);
 });
 
 app.listen(app.get('port'), function() {
